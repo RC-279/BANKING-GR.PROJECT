@@ -1,4 +1,4 @@
--- GRADUATION PROJECT 
+-- GRADUATION PROJECT
 -- PROJECT BANKING
 -- IT HAS 5 TABLES
 -- - CASH DEPARTMENT
@@ -10,48 +10,48 @@
 -- CASH DEPARTMENT
 --------------------------------------------------------
 CREATE TABLE CUSTINFO (
-SERIAL_NO SERIAL  , 
-ACCNO INT NOT NULL PRIMARY KEY UNIQUE , 
-CLIENT_NAME VARCHAR NOT NULL , 
+SERIAL_NO SERIAL  ,
+ACCNO INT NOT NULL PRIMARY KEY UNIQUE ,
+CLIENT_NAME VARCHAR NOT NULL ,
 MOBLIE_NO VARCHAR,
-EMAIL VARCHAR ;
+EMAIL VARCHAR );
 --------------------------------------------------------
---MAIN TABLE 
+--MAIN TABLE
 --------------------------------------------------------
-CREATE TABLE MAIN_TRANSACTION_CASH ( 
-ACCNO INT NOT NULL PRIMARY KEY UNIQUE , 
-CLIENT_NAME VARCHAR NOT NULL , 
+CREATE TABLE MAIN_TRANSACTION_CASH (
+ACCNO INT NOT NULL PRIMARY KEY UNIQUE ,
+CLIENT_NAME VARCHAR NOT NULL ,
 MOBLIE_NO VARCHAR ,
 BALANCE INT,
 CONSTRAINT fk_customer
-      FOREIGN KEY(ACCNO)  
-	  REFERENCES CUSTINFO(ACCNO));
+      FOREIGN KEY(ACCNO) 
+                 REFERENCES CUSTINFO(ACCNO));
 --------------------------------------------------------
-CREATE TABLE HISTORY_CASH ( 
-ACCNO INT  , 
-CLIENT_NAME VARCHAR  , 
+CREATE TABLE HISTORY_CASH (
+ACCNO INT  ,
+CLIENT_NAME VARCHAR  ,
 MOBLIE_NO VARCHAR ,
 BALANCE INT,
 EDITER_NAME VARCHAR,
 TIME VARCHAR);
 --------------------------------------------------------
-INSERT INTO CUSTINFO (ACCNO , CLIENT_NAME , MOBLIE_NO , EMAIL) 
+INSERT INTO CUSTINFO (ACCNO , CLIENT_NAME , MOBLIE_NO , EMAIL)
 VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124','rudrakshagohil@yahoo.com'),
         (11012 , 'RAMNATH KOLHI' , '9909150006', 'ramnathkolhi099@gmail.com'),
-		    (11013 , 'GURUCHANK SINGH' , '6335489420', 'guruchanksingh33@hotmail.com'),
-		    (11014 , 'BHUPANDRA PATEL' , '9833737546', 'bhupandrapatel9878@gmail.com') , 
-		    (11015 , 'AJAY SHAH' , '9992220126', 'ajayshah522@gmail.com'),
-		    (11016 , 'PARTH RATHOD' , '9823452441','parthrathod34@gmail.com'),
-	    	(11017 , 'AARYAN DESAI' , '9823115403', 'aaryandesai.22@gmail.com');
+                                  (11013 , 'GURUCHANK SINGH' , '6335489420', 'guruchanksingh33@hotmail.com'),
+                                  (11014 , 'BHUPANDRA PATEL' , '9833737546', 'bhupandrapatel9878@gmail.com') ,
+                                  (11015 , 'AJAY SHAH' , '9992220126', 'ajayshah522@gmail.com'),
+                                  (11016 , 'PARTH RATHOD' , '9823452441','parthrathod34@gmail.com'),
+                              (11017 , 'AARYAN DESAI' , '9823115403', 'aaryandesai.22@gmail.com');
 ----------------------------------------------------------------------------------------
-INSERT INTO MAIN_TRANSACTION_CASH(ACCNO , CLIENT_NAME , MOBLIE_NO ,BALANCE ) 
+INSERT INTO MAIN_TRANSACTION_CASH(ACCNO , CLIENT_NAME , MOBLIE_NO ,BALANCE )
 VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124' , 65000  ),
         (11012 , 'RAMNATH KOLHI' , '9909150006' , 55000 ),
-		    (11013 , 'GURUCHANK SINGH' , '6335489420' , 45000 ),
-		    (11014 , 'BHUPANDRA PATEL' , '9833737546',99000 ) , 
-	    	(11015 , 'AJAY SHAH' , '9992220126', 75000 ),
-		    (11016 , 'PARTH RATHOD' , '9823452441' , 35000 ),
-		    (11017 , 'AARYAN DESAI' , '9823115403' , 83500 );
+                                  (11013 , 'GURUCHANK SINGH' , '6335489420' , 45000 ),
+                                  (11014 , 'BHUPANDRA PATEL' , '9833737546',99000 ) ,
+                              (11015 , 'AJAY SHAH' , '9992220126', 75000 ),
+                                  (11016 , 'PARTH RATHOD' , '9823452441' , 35000 ),
+                                  (11017 , 'AARYAN DESAI' , '9823115403' , 83500 );
 ----------------------------------------------------------------------------------------
 -- PROCEDURE (1)
 ----------------------------------------------------------------------------------------
@@ -69,10 +69,10 @@ END;$$*/
 CREATE FUNCTION AVG_COUNTER_CASH()
 RETURNS INT AS $AVGCOUNTER$
 declare
-	AVGCOUNTER FLOAT;
+               AVGCOUNTER FLOAT;
 BEGIN
-	select AVG(BALANCE) into AVGCOUNTER from MAIN_TRANSACTION_CASH ;
-	return AVGCOUNTER;
+               select AVG(BALANCE) into AVGCOUNTER from MAIN_TRANSACTION_CASH ;
+               return AVGCOUNTER;
 END;
 $AVGCOUNTER$ LANGUAGE plpgsql;
 ----------------------------------------------------------------------------------------
@@ -81,22 +81,22 @@ $AVGCOUNTER$ LANGUAGE plpgsql;
 CREATE FUNCTION TOTAL_COUNTER_CASH()
 RETURNS INT AS $TOTALCOUNTER$
 declare
-	TOTALCOUNTER FLOAT;
+               TOTALCOUNTER FLOAT;
 BEGIN
-	select SUM(BALANCE) into TOTALCOUNTER from MAIN_TRANSACTION_CASH ;
-	return TOTALCOUNTER;
+               select SUM(BALANCE) into TOTALCOUNTER from MAIN_TRANSACTION_CASH ;
+               return TOTALCOUNTER;
 END;
 $TOTALCOUNTER$ LANGUAGE plpgsql;
-
+ 
 --------------------------------------------------------------------------------------------
 -- Fucntion to Trigger (2)
 --------------------------------------------------------------------------------------------
 CREATE FUNCTION UPDATE_DATA_CASH()
-	RETURNS trigger as
+               RETURNS trigger as
 $$
-BEGIN 
-	INSERT INTO HISTORY (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE,EDITER_NAME,TIME ) VALUES 
-	(NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,CURRENT_USER, CURRENT_DATE);
+BEGIN
+               INSERT INTO HISTORY (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE,EDITER_NAME,TIME ) VALUES
+             (NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,CURRENT_USER, CURRENT_DATE);
 RETURN NEW;
 END;
 $$
@@ -108,11 +108,11 @@ FOR EACH ROW
 EXECUTE PROCEDURE UPDATE_DATA_CASH();
 ----------------------------------------------------------------------------------------
 CREATE FUNCTION INSERT_DATA_CASH()
-	RETURNS trigger as
+               RETURNS trigger as
 $$
-BEGIN 
-	INSERT INTO HISTORY (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE,EDITER_NAME,TIME ) VALUES 
-	(NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,CURRENT_USER, CURRENT_DATE);
+BEGIN
+               INSERT INTO HISTORY (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE,EDITER_NAME,TIME ) VALUES
+             (NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,CURRENT_USER, CURRENT_DATE);
 RETURN NEW;
 END;
 $$
@@ -130,7 +130,7 @@ LOGIN
 PASSWORD 'CASH@1';
 ----------------------------------------------------------------------------------------
 GRANT SELECT,INSERT,UPDATE
-ON CUSTINFO , MAIN_TRANSACTION
+ON CUSTINFO , MAIN_TRANSACTION_CASH , HISTORY_CASH
 TO CASHDEP ;
 -- CREATE NEW SERVER WITH ID = cashdep & PASSWORD = CASH@1
 ----------------------------------------------------------------------------------------
