@@ -1,3 +1,16 @@
+-- GRADUATION PROJECT 
+-- PROJECT BANKING
+-- IT HAS 5 TABLES
+-- - CASH DEPARTMENT
+-- - CHEQUE DEPARTMENT
+-- - FD DEPARTMENT
+-- - LOAN DEPARTMENT
+-- - BRANCH MANAGER (HAVING ALL ACCESS OF ALL TABLES)
+--------------------------------------------------------
+-- CHEQUE DEPARTMENT
+--------------------------------------------------------
+--MAIN TABLE 
+--------------------------------------------------------
 CREATE TABLE MAIN_TRANSACTION_FD (
 SERIAL_NO SERIAL  , 
 ACCNO INT NOT NULL PRIMARY KEY UNIQUE , 
