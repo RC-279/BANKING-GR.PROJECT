@@ -121,4 +121,15 @@ AFTER INSERT
 ON MAIN_TRANSACTION
 FOR EACH ROW
 EXECUTE PROCEDURE INSERT_DATA_CHEQUE(); 
----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+-- LOGINS AND ACCESS
+----------------------------------------------------------------------------------------
+CREATE ROLE CHEQUEDEP
+LOGIN
+PASSWORD 'CHEQUE@1';
+----------------------------------------------------------------------------------------
+GRANT SELECT,INSERT,UPDATE
+ON CUSTINFO , MAIN_TRANSACTION_CHEQUE
+TO CHEQUEDEP ;
+-- CREATE NEW SERVER WITH ID = chequedep & PASSWORD = CHEQUE@1
+----------------------------------------------------------------------------------------
