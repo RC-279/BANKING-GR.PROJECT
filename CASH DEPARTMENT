@@ -36,7 +36,8 @@ EDITER_NAME VARCHAR,
 TIME VARCHAR);
 --------------------------------------------------------
 INSERT INTO CUSTINFO (ACCNO , CLIENT_NAME , MOBLIE_NO , EMAIL)
-VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124','rudrakshagohil@yahoo.com'),
+VALUES  (11000 , 'BANK FD ACCOUNT' , '0265 537832','Bankfd@gmail.com');
+        (11011 , 'RUDRAKSHA GOHIL' , '9825894124','rudrakshagohil@yahoo.com'),
         (11012 , 'RAMNATH KOLHI' , '9909150006', 'ramnathkolhi099@gmail.com'),
                                   (11013 , 'GURUCHANK SINGH' , '6335489420', 'guruchanksingh33@hotmail.com'),
                                   (11014 , 'BHUPANDRA PATEL' , '9833737546', 'bhupandrapatel9878@gmail.com') ,
