@@ -27,15 +27,14 @@ CONSTRAINT fk_customer
       FOREIGN KEY(ACCNO)  
 	  REFERENCES CUSTINFO(ACCNO));
 --------------------------------------------------------
-CREATE TABLE HISTORY_CASH (
-SERIAL_NO SERIAL  , 
+CREATE TABLE HISTORY_CASH ( 
 ACCNO INT  , 
 CLIENT_NAME VARCHAR  , 
 MOBLIE_NO VARCHAR ,
 BALANCE INT,
 EDITER_NAME VARCHAR,
 TIME VARCHAR);
-----------------------------------------------------------------------------------------------
+--------------------------------------------------------
 INSERT INTO CUSTINFO (ACCNO , CLIENT_NAME , MOBLIE_NO , EMAIL) 
 VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124','rudrakshagohil@yahoo.com'),
         (11012 , 'RAMNATH KOLHI' , '9909150006','ramnathkolhi099@gmail.com'),
@@ -44,7 +43,7 @@ VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124','rudrakshagohil@yahoo.com'),
 		    (11015 , 'AJAY SHAH' , '9992220126', 'ajayshah522@gmail.com'),
 		    (11016 , 'PARTH RATHOD' , '9823452441', 'parthrathod34@gmail.com'),
 	    	(11017 , 'AARYAN DESAI' , '9823115403', 'aaryandesai.22@gmail.com');
-----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 INSERT INTO MAIN_TRANSACTION_CASH(ACCNO , CLIENT_NAME , MOBLIE_NO ,BALANCE) 
 VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124' , 65000),
         (11012 , 'RAMNATH KOLHI' , '9909150006' , 55000 ),
@@ -53,9 +52,9 @@ VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124' , 65000),
 	    	(11015 , 'AJAY SHAH' , '9992220126', 75000 ),
 		    (11016 , 'PARTH RATHOD' , '9823452441' , 35000  ),
 		    (11017 , 'AARYAN DESAI' , '9823115403' , 83500 );
-----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 -- PROCEDURE (1)
-----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 CREATE PROCEDURE TRANSFER_CASH(
 SENDER INT,RECEIVER INT, amount FLOAT)
 LANGUAGE PLPGSQL
@@ -96,8 +95,8 @@ CREATE FUNCTION UPDATE_DATA_CASH()
 	RETURNS trigger as
 $$
 BEGIN 
-	INSERT INTO HISTORY (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE,EMAIL,EDITER_NAME,TIME ) VALUES 
-	(NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,NEW.EMAIL,CURRENT_USER, CURRENT_DATE);
+	INSERT INTO HISTORY_CASH (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE,EDITER_NAME,TIME ) VALUES 
+	(NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,CURRENT_USER, CURRENT_DATE);
 RETURN NEW;
 END;
 $$
@@ -112,8 +111,8 @@ CREATE FUNCTION INSERT_DATA_CASH()
 	RETURNS trigger as
 $$
 BEGIN 
-	INSERT INTO HISTORY (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE,EMAIL,EDITER_NAME,TIME ) VALUES 
-	(NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,NEW.EMAIL,CURRENT_USER, CURRENT_DATE);
+	INSERT INTO HISTORY_CASH ( ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE,EDITER_NAME,TIME ) VALUES 
+	( NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,CURRENT_USER, CURRENT_DATE);
 RETURN NEW;
 END;
 $$
@@ -122,7 +121,7 @@ CREATE TRIGGER INSERT_DATA_CASH
 AFTER INSERT
 ON MAIN_TRANSACTION_CASH
 FOR EACH ROW
-EXECUTE PROCEDURE INSERT_DATA_CASH();
+EXECUTE PROCEDURE INSERT_DATA_CASH();*/
 ----------------------------------------------------------------------------------------
 -- LOGINS AND ACCESS
 ----------------------------------------------------------------------------------------
@@ -131,7 +130,7 @@ LOGIN
 PASSWORD 'CASH@1';
 ----------------------------------------------------------------------------------------
 GRANT SELECT,INSERT,UPDATE
-ON CUSTINFO , MAIN_TRANSACTION_CASH
+ON CUSTINFO , MAIN_TRANSACTION_CASH , HISTORY_CASH
 TO CASHDEP ;
 -- CREATE NEW SERVER WITH ID = cashdep & PASSWORD = CASH@1
 ----------------------------------------------------------------------------------------
