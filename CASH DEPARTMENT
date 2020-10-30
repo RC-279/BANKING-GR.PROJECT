@@ -7,116 +7,130 @@
 -- - LOAN DEPARTMENT
 -- - BRANCH MANAGER (HAVING ALL ACCESS OF ALL TABLES)
 --------------------------------------------------------
--- CHEQUE DEPARTMENT
+-- CASH DEPARTMENT
+--------------------------------------------------------
+CREATE TABLE CUSTINFO (
+SERIAL_NO SERIAL  , 
+ACCNO INT NOT NULL PRIMARY KEY UNIQUE , 
+CLIENT_NAME VARCHAR NOT NULL , 
+MOBLIE_NO VARCHAR,
+EMAIL VARCHAR ;
 --------------------------------------------------------
 --MAIN TABLE 
 --------------------------------------------------------
-/*CREATE TABLE MAIN_TRANSACTION_CHEQUE ( 
+CREATE TABLE MAIN_TRANSACTION_CASH ( 
 ACCNO INT NOT NULL PRIMARY KEY UNIQUE , 
 CLIENT_NAME VARCHAR NOT NULL , 
 MOBLIE_NO VARCHAR ,
 BALANCE INT,
-CHEQUE_NO VARCHAR UNIQUE , 
 CONSTRAINT fk_customer
       FOREIGN KEY(ACCNO)  
 	  REFERENCES CUSTINFO(ACCNO));
 --------------------------------------------------------
-CREATE TABLE HISTORY_CHEQUE ( 
+CREATE TABLE HISTORY_CASH ( 
 ACCNO INT  , 
 CLIENT_NAME VARCHAR  , 
 MOBLIE_NO VARCHAR ,
 BALANCE INT,
-CHEQUE_NO VARCHAR ,
 EDITER_NAME VARCHAR,
 TIME VARCHAR);
-----------------------------------------------------------------------------------------------------
-INSERT INTO MAIN_TRANSACTION_CHEQUE(ACCNO , CLIENT_NAME , MOBLIE_NO ,BALANCE , CHEQUE_NO ) 
-VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124' , 65000 ,'34232'),
-        (11012 , 'RAMNATH KOLHI' , '9909150006' , 55000 ,'56662'),
-		    (11013 , 'GURUCHANK SINGH' , '6335489420' , 45000 ,'90098'),
-		    (11014 , 'BHUPANDRA PATEL' , '9833737546',99000 ,82520) , 
-	    	(11015 , 'AJAY SHAH' , '9992220126', 75000 ,76390),
-		    (11016 , 'PARTH RATHOD' , '9823452441' , 35000  ,'55223'),
-		    (11017 , 'AARYAN DESAI' , '9823115403' , 83500 ,'15473');
-----------------------------------------------------------------------------------------------------
+--------------------------------------------------------
+INSERT INTO CUSTINFO (ACCNO , CLIENT_NAME , MOBLIE_NO , EMAIL) 
+VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124','rudrakshagohil@yahoo.com'),
+        (11012 , 'RAMNATH KOLHI' , '9909150006', 'ramnathkolhi099@gmail.com'),
+		    (11013 , 'GURUCHANK SINGH' , '6335489420', 'guruchanksingh33@hotmail.com'),
+		    (11014 , 'BHUPANDRA PATEL' , '9833737546', 'bhupandrapatel9878@gmail.com') , 
+		    (11015 , 'AJAY SHAH' , '9992220126', 'ajayshah522@gmail.com'),
+		    (11016 , 'PARTH RATHOD' , '9823452441','parthrathod34@gmail.com'),
+	    	(11017 , 'AARYAN DESAI' , '9823115403', 'aaryandesai.22@gmail.com');
+----------------------------------------------------------------------------------------
+INSERT INTO MAIN_TRANSACTION_CASH(ACCNO , CLIENT_NAME , MOBLIE_NO ,BALANCE ) 
+VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124' , 65000  ),
+        (11012 , 'RAMNATH KOLHI' , '9909150006' , 55000 ),
+		    (11013 , 'GURUCHANK SINGH' , '6335489420' , 45000 ),
+		    (11014 , 'BHUPANDRA PATEL' , '9833737546',99000 ) , 
+	    	(11015 , 'AJAY SHAH' , '9992220126', 75000 ),
+		    (11016 , 'PARTH RATHOD' , '9823452441' , 35000 ),
+		    (11017 , 'AARYAN DESAI' , '9823115403' , 83500 );
+----------------------------------------------------------------------------------------
 -- PROCEDURE (1)
-----------------------------------------------------------------------------------------------------
-CREATE PROCEDURE TRANSFER_CHEQUE(
+----------------------------------------------------------------------------------------
+/*CREATE PROCEDURE TRANSFER_CASH(
 SENDER INT,RECEIVER INT, amount FLOAT)
 LANGUAGE PLPGSQL
 AS $$
 bEGIN
-UPDATE MAIN_TRANSACTION_CHEQUE SET balance = balance - AMOUNT WHERE ACCNO = SENDER;
-UPDATE MAIN_TRANSACTION_CHEQUE SET balance = balance + AMOUNT WHERE ACCNO = RECEIVER;
-END;$$ 
-----------------------------------------------------------------------------------------------------
+UPDATE MAIN_TRANSACTION_CASH SET balance = balance - AMOUNT WHERE ACCNO = SENDER;
+UPDATE MAIN_TRANSACTION_CASH SET balance = balance + AMOUNT WHERE ACCNO = RECEIVER;
+END;$$*/
 ----------------------------------------------------------------------------------------
 -- FUNCTION OF AVERAGE (TOTAL(2))(1)
 ----------------------------------------------------------------------------------------
- CREATE FUNCTION AVG_COUNTER_CHEQUE()
+CREATE FUNCTION AVG_COUNTER_CASH()
 RETURNS INT AS $AVGCOUNTER$
 declare
 	AVGCOUNTER FLOAT;
 BEGIN
-	select AVG(BALANCE) into AVGCOUNTER from MAIN_TRANSACTION_CHEQUE ;
+	select AVG(BALANCE) into AVGCOUNTER from MAIN_TRANSACTION_CASH ;
 	return AVGCOUNTER;
 END;
 $AVGCOUNTER$ LANGUAGE plpgsql;
 ----------------------------------------------------------------------------------------
 --FUNCTION OF SUM (2)
 ----------------------------------------------------------------------------------------
-CREATE FUNCTION TOTAL_COUNTER_CHEQUE()
+CREATE FUNCTION TOTAL_COUNTER_CASH()
 RETURNS INT AS $TOTALCOUNTER$
 declare
 	TOTALCOUNTER FLOAT;
 BEGIN
-	select SUM(BALANCE) into TOTALCOUNTER from MAIN_TRANSACTION_CHEQUE ;
+	select SUM(BALANCE) into TOTALCOUNTER from MAIN_TRANSACTION_CASH ;
 	return TOTALCOUNTER;
 END;
 $TOTALCOUNTER$ LANGUAGE plpgsql;
----------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------
 -- Fucntion to Trigger (2)
----------------------------------------------------------------------------------------------------------
-CREATE FUNCTION UPDATE_DATA_CHEQUE()
+--------------------------------------------------------------------------------------------
+CREATE FUNCTION UPDATE_DATA_CASH()
 	RETURNS trigger as
 $$
 BEGIN 
-	INSERT INTO HISTORY_CHEQUE (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE,CHEQUE_NO,EDITER_NAME,TIME ) VALUES 
-	(NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,NEW.CHEQUE_NO,CURRENT_USER, CURRENT_DATE);
+	INSERT INTO HISTORY (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE,EDITER_NAME,TIME ) VALUES 
+	(NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,CURRENT_USER, CURRENT_DATE);
 RETURN NEW;
 END;
 $$
 LANGUAGE 'plpgsql';
-CREATE TRIGGER UPDATE_DATA_CHEQUE
+CREATE TRIGGER UPDATE_DATA_CASH
 AFTER UPDATE
-ON MAIN_TRANSACTION_CHEQUE
+ON MAIN_TRANSACTION_CASH
 FOR EACH ROW
-EXECUTE PROCEDURE UPDATE_DATA_CHEQUE();
----------------------------------------------------------------------------------------------------------
-CREATE FUNCTION INSERT_DATA_CHEQUE()
+EXECUTE PROCEDURE UPDATE_DATA_CASH();
+----------------------------------------------------------------------------------------
+CREATE FUNCTION INSERT_DATA_CASH()
 	RETURNS trigger as
 $$
 BEGIN 
-	INSERT INTO HISTORY_CHEQUE (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE,CHEQUE_NO,EDITER_NAME,TIME ) VALUES 
-	(NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,NEW.CHEQUE_NO,CURRENT_USER, CURRENT_DATE);
+	INSERT INTO HISTORY (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE,EDITER_NAME,TIME ) VALUES 
+	(NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,CURRENT_USER, CURRENT_DATE);
 RETURN NEW;
 END;
 $$
 LANGUAGE 'plpgsql';
-CREATE TRIGGER INSERT_DATA_CHEQUE
+CREATE TRIGGER INSERT_DATA_CASH
 AFTER INSERT
-ON MAIN_TRANSACTION_CHEQUE
+ON MAIN_TRANSACTION_CASH
 FOR EACH ROW
-EXECUTE PROCEDURE INSERT_DATA_CHEQUE(); */
+EXECUTE PROCEDURE INSERT_DATA_CASH();
 ----------------------------------------------------------------------------------------
 -- LOGINS AND ACCESS
 ----------------------------------------------------------------------------------------
---CREATE ROLE CHEQUEDEP
---LOGIN
---PASSWORD 'CHEQUE@1';
+CREATE ROLE CASHDEP
+LOGIN
+PASSWORD 'CASH@1';
 ----------------------------------------------------------------------------------------
 GRANT SELECT,INSERT,UPDATE
-ON CUSTINFO , MAIN_TRANSACTION_CHEQUE , HISTORY_CHEQUE
-TO CHEQUEDEP ;
--- CREATE NEW SERVER WITH ID = chequedep & PASSWORD = CHEQUE@1
+ON CUSTINFO , MAIN_TRANSACTION
+TO CASHDEP ;
+-- CREATE NEW SERVER WITH ID = cashdep & PASSWORD = CASH@1
 ----------------------------------------------------------------------------------------
