@@ -1,24 +1,103 @@
--- GRADUATION PROJECT 
--- PROJECT BANKING
--- IT HAS 5 TABLES
--- - CASH DEPARTMENT
--- - CHEQUE DEPARTMENT
--- - FD DEPARTMENT
--- - LOAN DEPARTMENT
--- - BRANCH MANAGER (HAVING ALL ACCESS OF ALL TABLES)
---------------------------------------------------------
--- CHEQUE DEPARTMENT
---------------------------------------------------------
 --MAIN TABLE 
 --------------------------------------------------------
-CREATE TABLE MAIN_TRANSACTION_FD (
+/*CREATE TABLE MAIN_TRANSACTION_FD (
 SERIAL_NO SERIAL  , 
 ACCNO INT NOT NULL PRIMARY KEY UNIQUE , 
 CLIENT_NAME VARCHAR NOT NULL , 
 MOBLIE_NO VARCHAR ,
-BALANCE INT,
-RATE_OF_INTEREST VARCHAR UNIQUE , 
-TIME_SPAM(YEARS) VARCHAR,
+BALANCE_OF_FD INT,
+RATE_OF_INTEREST VARCHAR NOT NULL , 
+TIME_SPAM_YEARS VARCHAR,
 CONSTRAINT fk_customer
       FOREIGN KEY(ACCNO)  
 	  REFERENCES CUSTINFO(ACCNO));
+--------------------------------------------------------
+CREATE TABLE HISTORY_FD (
+SERIAL_NO SERIAL  , 
+ACCNO INT  , 
+CLIENT_NAME VARCHAR  , 
+MOBLIE_NO VARCHAR ,
+BALANCE_OF_FD INT,
+RATE_OF_INTEREST VARCHAR NOT NULL, 
+TIME_SPAM_YEARS VARCHAR,
+EDITER_NAME VARCHAR,
+TIME VARCHAR);
+----------------------------------------------------------------------------------------------------
+INSERT INTO MAIN_TRANSACTION_FD(ACCNO , CLIENT_NAME , MOBLIE_NO , BALANCE_OF_FD, RATE_OF_INTEREST,TIME_SPAM_YEARS) 
+VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124' , 15000, '7%','3 YEARS'),
+        (11012 , 'RAMNATH KOLHI' , '9909150006'  ,20000, '5%' , '2 YEARS'),
+		    (11013 , 'GURUCHANK SINGH' , '6335489420' ,7000, '2%' , '1 YEAR'),
+		    (11014 , 'BHUPANDRA PATEL' , '9833737546',1000000, '10%' , '10 YEARS') , 
+	    	(11015 , 'AJAY SHAH' , '9992220126',25000, '5%' , '2 YEARS'),
+		    (11016 , 'PARTH RATHOD' , '9823452441' ,150000, '10%','10 YEARS' ),
+		    (11017 , 'AARYAN DESAI' , '9823115403' ,65000,'7%' , '3 YEARS');*/
+----------------------------------------------------------------------------------------------------
+-- PROCEDURE (1)
+----------------------------------------------------------------------------------------------------
+/*CREATE PROCEDURE TRANSFER_FD(
+SENDER INT,RECEIVER INT, amount FLOAT)
+LANGUAGE PLPGSQL
+AS $$
+bEGIN
+UPDATE MAIN_TRANSACTION_FD SET balance = balance - AMOUNT WHERE ACCNO = SENDER;
+UPDATE MAIN_TRANSACTION_FD SET balance = balance + AMOUNT WHERE ACCNO = RECEIVER;
+END;$$*/
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+-- FUNCTION OF AVERAGE (1)
+----------------------------------------------------------------------------------------
+/*CREATE FUNCTION AVG_COUNTER_FD()
+RETURNS INT AS $AVGCOUNTER$
+declare
+	AVGCOUNTER FLOAT;
+BEGIN
+	select AVERAGE(BALANCE_OF_FD) into AVGCOUNTER from MAIN_TRANSACTION_FD ;
+	return AVGCOUNTER;
+END;
+$AVGCOUNTER$ LANGUAGE plpgsql;
+---------------------------------------------------------------------------------------------------------
+-- Fucntion to Trigger (2)
+---------------------------------------------------------------------------------------------------------
+CREATE FUNCTION UPDATE_DATA_FD()
+	RETURNS trigger as
+$$
+BEGIN 
+	INSERT INTO HISTORY_FD (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE_OF_FD ,RATE_OF_INTEREST  ,TIME_SPAM_YEARS,EDITER_NAME,TIME ) VALUES 
+	(NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,NEW.BALANCE_OF_FD ,NEW.RATE_OF_INTEREST  ,NEW.TIME_SPAM_YEARS,CURRENT_USER, CURRENT_DATE);
+RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+CREATE TRIGGER UPDATE_DATA_FD
+AFTER UPDATE
+ON MAIN_TRANSACTION_FD
+FOR EACH ROW
+EXECUTE PROCEDURE UPDATE_DATA_FD();
+---------------------------------------------------------------------------------------------------------
+CREATE FUNCTION INSERT_DATA_FD()
+	RETURNS trigger as
+$$
+BEGIN 
+	INSERT INTO HISTORY_FD (ACCNO,CLIENT_NAME,MOBLIE_NO,BALANCE_OF_FD ,RATE_OF_INTEREST  ,TIME_SPAM_YEARS,EDITER_NAME,TIME ) VALUES 
+	(NEW.ACCNO,NEW.CLIENT_NAME,NEW.MOBLIE_NO,NEW.BALANCE,NEW.BALANCE_OF_FD ,NEW.RATE_OF_INTEREST  ,NEW.TIME_SPAM_YEARS,CURRENT_USER, CURRENT_DATE);
+RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+CREATE TRIGGER INSERT_DATA_FD
+AFTER INSERT
+ON MAIN_TRANSACTION_FD
+FOR EACH ROW
+EXECUTE PROCEDURE INSERT_DATA_FD(); 
+----------------------------------------------------------------------------------------
+-- LOGINS AND ACCESS
+----------------------------------------------------------------------------------------
+CREATE ROLE FDDEP
+LOGIN
+PASSWORD 'FD@1';
+----------------------------------------------------------------------------------------
+GRANT SELECT,INSERT,UPDATE
+ON CUSTINFO , MAIN_TRANSACTION_FD
+TO FDDEP ;
+-- CREATE NEW SERVER WITH ID = fddep & PASSWORD = FD@1*/
+----------------------------------------------------------------------------------------
