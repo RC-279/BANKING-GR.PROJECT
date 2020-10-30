@@ -9,7 +9,6 @@
 -- CASH DEPARTMENT
 --------------------------------------------------------
 CREATE TABLE CUSTINFO (
-SERIAL_NO SERIAL  , 
 ACCNO INT NOT NULL PRIMARY KEY UNIQUE , 
 CLIENT_NAME VARCHAR NOT NULL , 
 MOBLIE_NO VARCHAR,
@@ -17,8 +16,7 @@ EMAIL VARCHAR);
 --------------------------------------------------------
 --MAIN TABLE 
 --------------------------------------------------------
-CREATE TABLE MAIN_TRANSACTION_CASH (
-SERIAL_NO SERIAL  , 
+CREATE TABLE MAIN_TRANSACTION_CASH ( 
 ACCNO INT NOT NULL PRIMARY KEY UNIQUE , 
 CLIENT_NAME VARCHAR NOT NULL , 
 MOBLIE_NO VARCHAR ,
@@ -121,7 +119,7 @@ CREATE TRIGGER INSERT_DATA_CASH
 AFTER INSERT
 ON MAIN_TRANSACTION_CASH
 FOR EACH ROW
-EXECUTE PROCEDURE INSERT_DATA_CASH();*/
+EXECUTE PROCEDURE INSERT_DATA_CASH();
 ----------------------------------------------------------------------------------------
 -- LOGINS AND ACCESS
 ----------------------------------------------------------------------------------------
