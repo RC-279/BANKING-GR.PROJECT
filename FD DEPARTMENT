@@ -8,9 +8,10 @@
 -- - BRANCH MANAGER (HAVING ALL ACCESS OF ALL TABLES)
 --------------------------------------------------------
 -- FD DEPARTMENT
+--------------------------------------------------------
 --MAIN TABLE 
 --------------------------------------------------------
-/*CREATE TABLE MAIN_TRANSACTION_FD ( 
+CREATE TABLE MAIN_TRANSACTION_FD ( 
 ACCNO INT NOT NULL PRIMARY KEY UNIQUE , 
 CLIENT_NAME VARCHAR NOT NULL , 
 MOBLIE_NO VARCHAR ,
@@ -40,7 +41,7 @@ VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124' ,25000, 15000, '7%','3 YEARS')
 		    (11014 , 'BHUPANDRA PATEL' , '9833737546',2500000,1000000, '10%' , '10 YEARS') , 
 	    	(11015 , 'AJAY SHAH' , '9992220126',56000,25000, '5%' , '2 YEARS'),
 		    (11016 , 'PARTH RATHOD' , '9823452441' ,24000,150000, '10%','10 YEARS' ),
-		    (11017 , 'AARYAN DESAI' , '9823115403' ,34000,65000,'7%' , '3 YEARS');*/
+		    (11017 , 'AARYAN DESAI' , '9823115403' ,34000,65000,'7%' , '3 YEARS');
 ----------------------------------------------------------------------------------------------------
 -- PROCEDURE (1)
 ----------------------------------------------------------------------------------------------------
@@ -56,7 +57,7 @@ END;$$
 ----------------------------------------------------------------------------------------
 -- FUNCTION OF AVERAGE (1)
 ----------------------------------------------------------------------------------------
-/*CREATE FUNCTION AVG_COUNTER_FD()
+CREATE FUNCTION AVG_COUNTER_FD()
 RETURNS INT AS $AVGCOUNTER$
 declare
 	AVGCOUNTER FLOAT;
@@ -64,11 +65,11 @@ BEGIN
 	select AVERAGE(BALANCE_OF_FD) into AVGCOUNTER from MAIN_TRANSACTION_FD ;
 	return AVGCOUNTER;
 END;
-$AVGCOUNTER$ LANGUAGE plpgsql;*/
+$AVGCOUNTER$ LANGUAGE plpgsql;
 ---------------------------------------------------------------------------------------------------------
 -- Fucntion to Trigger (2)
 ---------------------------------------------------------------------------------------------------------
-/*CREATE FUNCTION UPDATE_DATA_FD()
+CREATE FUNCTION UPDATE_DATA_FD()
 	RETURNS trigger as
 $$
 BEGIN 
@@ -98,16 +99,16 @@ CREATE TRIGGER INSERT_DATA_FD
 AFTER INSERT
 ON MAIN_TRANSACTION_FD
 FOR EACH ROW
-EXECUTE PROCEDURE INSERT_DATA_FD(); */
+EXECUTE PROCEDURE INSERT_DATA_FD(); 
 ----------------------------------------------------------------------------------------
 -- LOGINS AND ACCESS
 ----------------------------------------------------------------------------------------
-/*CREATE ROLE FDDEP
+CREATE ROLE FDDEP
 LOGIN
-PASSWORD 'FD@1';*/
+PASSWORD 'FD@1';
 ----------------------------------------------------------------------------------------
-/*GRANT SELECT,INSERT,UPDATE
+GRANT SELECT,INSERT,UPDATE
 ON CUSTINFO , MAIN_TRANSACTION_FD , HISTORY_FD
 TO FDDEP ;
--- CREATE NEW SERVER WITH ID = fddep & PASSWORD = FD@1*/
+-- CREATE NEW SERVER WITH ID = fddep & PASSWORD = FD@1
 ----------------------------------------------------------------------------------------
