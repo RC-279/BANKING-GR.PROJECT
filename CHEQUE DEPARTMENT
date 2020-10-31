@@ -11,7 +11,7 @@
 --------------------------------------------------------
 --MAIN TABLE 
 --------------------------------------------------------
-/*CREATE TABLE MAIN_TRANSACTION_CHEQUE ( 
+CREATE TABLE MAIN_TRANSACTION_CHEQUE ( 
 ACCNO INT NOT NULL PRIMARY KEY UNIQUE , 
 CLIENT_NAME VARCHAR NOT NULL , 
 MOBLIE_NO VARCHAR ,
@@ -107,7 +107,7 @@ CREATE TRIGGER INSERT_DATA_CHEQUE
 AFTER INSERT
 ON MAIN_TRANSACTION_CHEQUE
 FOR EACH ROW
-EXECUTE PROCEDURE INSERT_DATA_CHEQUE(); */
+EXECUTE PROCEDURE INSERT_DATA_CHEQUE(); 
 ----------------------------------------------------------------------------------------
 -- LOGINS AND ACCESS
 ----------------------------------------------------------------------------------------
