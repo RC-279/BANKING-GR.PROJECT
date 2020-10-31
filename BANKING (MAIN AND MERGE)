@@ -376,6 +376,6 @@ TO BRANCH_MANAGER ;
 -- TOTAL TABLES ARE 7,
 -- TOTAL LOGINS ARE 4 AND 1 AUTOMATICALLY GENRATED,
 -- TOTAL PROCEDURES ARE 3,
--- ALL TABLE HAS PRIMARY KEY , NOT NULL , UNIQUE .
+-- ALL TABLE HAS PRIMARY KEY ,FOREIGN KEY , NOT NULL , UNIQUE .
 ---------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------
