@@ -56,14 +56,14 @@ VALUES  (11011 , 'RUDRAKSHA GOHIL' , '9825894124' , 65000  ),
 ----------------------------------------------------------------------------------------
 -- PROCEDURE (1)
 ----------------------------------------------------------------------------------------
-/*CREATE PROCEDURE TRANSFER_CASH(
+CREATE PROCEDURE TRANSFER_CASH(
 SENDER INT,RECEIVER INT, amount FLOAT)
 LANGUAGE PLPGSQL
 AS $$
 bEGIN
 UPDATE MAIN_TRANSACTION_CASH SET balance = balance - AMOUNT WHERE ACCNO = SENDER;
 UPDATE MAIN_TRANSACTION_CASH SET balance = balance + AMOUNT WHERE ACCNO = RECEIVER;
-END;$$*/
+END;$$
 ----------------------------------------------------------------------------------------
 -- FUNCTION OF AVERAGE (TOTAL(2))(1)
 ----------------------------------------------------------------------------------------
