@@ -1,0 +1,22 @@
+-- GRADUATION PROJECT
+-- PROJECT BANKING
+-- IT HAS 5 TABLES
+-- - CASH DEPARTMENT
+-- - CHEQUE DEPARTMENT
+-- - FD DEPARTMENT
+-- - LOAN DEPARTMENT
+-- - BRANCH MANAGER (HAVING ALL ACCESS OF ALL TABLES)
+----------------------------------------------------------------------------------------
+-- BRANCH MANAGER
+----------------------------------------------------------------------------------------
+-- LOGINS AND ACCESS
+----------------------------------------------------------------------------------------
+CREATE ROLE BRANCH_MANAGER
+LOGIN
+PASSWORD 'BRANCH_MANAGER@1';
+---------------------------------------------------------------------------------------------------------------------------------
+GRANT SELECT,INSERT,UPDATE,DELETE 
+ON CUSTINFO , MAIN_TRANSACTION_CASH , HISTORY_CASH ,  MAIN_TRANSACTION_CHEQUE , HISTORY_CHEQUE , MAIN_TRANSACTION_FD , HISTORY_FD
+TO BRANCH_MANAGER ;
+-- CREATE NEW SERVER WITH ID = BRANCH_MANAGER & PASSWORD = BRANCH_MANAGER@1
+---------------------------------------------------------------------------------------------------------------------------------
